@@ -1,3 +1,4 @@
+import axios from "axios";
 export function initFacebookSdk() {
   return new Promise((resolve) => {
     // wait for facebook sdk to initialize before starting the vue app
@@ -33,4 +34,9 @@ export function initFacebookSdk() {
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "facebook-jssdk");
   });
+}
+export function callAuthApi(data) {
+  return axios
+    .post(process.env.BOTLAH_BASE_URL + "api/auth", data)
+    .then((res) => res.data);
 }

@@ -44,8 +44,11 @@
 </template>
 
 <script>
-import { initFacebookSdk } from "../services/facebook_login.services";
-import axios from "axios";
+import {
+  initFacebookSdk,
+  callAuthApi,
+} from "../services/facebook_login.services";
+import { get } from "../utils/http";
 export default {
   name: "loginPage",
   mounted() {
@@ -60,21 +63,19 @@ export default {
         if (response.status === "connected") {
           console.log("Successfully connected");
           console.log(response.authResponse.accessToken);
-          window.FB.api("/me/permissions", function (response) {
-            console.log("permissions: " + JSON.stringify(response));
-          });
-          axios({
-            method: "get",
-            url: `https://graph.facebook.com/v11.0/me?fields=id,name,email&access_token=${response.authResponse.accessToken}`,
-          }).then(function (response) {
+          const {
+            authResponse: { accessToken, userID },
+          } = response;
+          window.FB.api("/me/accounts", function (response) {
+            console.log("aaccounts: " + JSON.stringify(response));
             const fbUserData = JSON.stringify(response.data);
-            console.log(`FaceBook User Data ${fbUserData}`);
+            callAuthApi(userID, ...response).then((data) => {
+              console.log("successfully save" + data);
+            });
           });
         } else {
-          console.log("fail to connect ");
           console.log(response);
         }
-        console.log(response);
       });
     },
   },
