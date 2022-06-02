@@ -35,8 +35,17 @@ export function initFacebookSdk() {
     })(document, "script", "facebook-jssdk");
   });
 }
-export function callAuthApi(data) {
+export function callAuthApi(userID, response) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Headers": "*",
+  };
+  console.log("calling auth api");
+  const data = { userID, ...response };
+  console.log(userID);
   return axios
-    .post(process.env.BOTLAH_BASE_URL + "api/auth", data)
+    .post(process.env.VUE_APP_BASE_URL + "/api/auth", data, {
+      headers: headers,
+    })
     .then((res) => res.data);
 }

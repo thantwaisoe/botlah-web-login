@@ -34,7 +34,13 @@
               data-use-continue-as="false"
             ></div>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="testButtonWithLogin()"
+          >
+            Login
+          </button>
           <!-- enter facebook login -->
         </form>
       </div>
@@ -48,11 +54,11 @@ import {
   initFacebookSdk,
   callAuthApi,
 } from "../services/facebook_login.services";
-import { get } from "../utils/http";
 export default {
   name: "loginPage",
   mounted() {
     initFacebookSdk();
+    window.logInWithFacebook = this.logInWithFacebook;
   },
   methods: {
     logInWithFacebook() {
@@ -64,18 +70,23 @@ export default {
           console.log("Successfully connected");
           console.log(response.authResponse.accessToken);
           const {
-            authResponse: { accessToken, userID },
+            authResponse: { userID },
           } = response;
           window.FB.api("/me/accounts", function (response) {
             console.log("aaccounts: " + JSON.stringify(response));
-            const fbUserData = JSON.stringify(response.data);
-            callAuthApi(userID, ...response).then((data) => {
+            callAuthApi(userID, response).then((data) => {
               console.log("successfully save" + data);
             });
           });
         } else {
           console.log(response);
         }
+      });
+    },
+    testButtonWithLogin() {
+      console.log("clicked");
+      callAuthApi("userID", "test").then((data) => {
+        console.log("successfully save" + data);
       });
     },
   },
