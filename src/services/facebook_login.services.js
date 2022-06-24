@@ -49,3 +49,31 @@ export function callAuthApi(userID, response) {
     })
     .then((res) => res.data);
 }
+export function loginToFacebook() {
+  return new Promise((resolve) => {
+    window.FB.login(function (response) {
+      console.log({
+        response: response.authResponse,
+      });
+      if (response.status === "connected") {
+        console.log("Successfully connected");
+        console.log(response.authResponse.accessToken);
+        const {
+          authResponse: {
+            userID
+          },
+        } = response;
+        window.FB.api("/me/accounts", function (response) {
+          console.log("aaccounts: " + JSON.stringify(response));
+          callAuthApi(userID, response).then((data) => {
+            console.log("successfully save" + data);
+          });
+        });
+        resolve(response.status)
+      } else {
+        console.log(response);
+      }
+    });
+  })
+  
+}

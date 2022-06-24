@@ -1,96 +1,91 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">left</div>
-      <div class="col-md-4">
-        <form>
-          <div class="mb-4">
-            <input
-              type="email"
-              class="form-control"
-              placeholder="Enter email"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-            />
-          </div>
-          <div class="mb-3">
-            <input
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              id="exampleInputPassword1"
-            />
-          </div>
-          <div class="facebook-login">
-            <div
-              class="fb-login-button"
-              data-width=""
-              data-size="medium"
-              data-scope="pages_manage_metadata,public_profile,email,pages_messaging,pages_show_list"
-              data-onlogin="logInWithFacebook();"
-              data-button-type="continue_with"
-              data-layout="default"
-              data-auto-logout-link="false"
-              data-use-continue-as="false"
-            ></div>
-          </div>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="testButtonWithLogin()"
-          >
-            Login
-          </button>
-          <!-- enter facebook login -->
-        </form>
-      </div>
-      <div class="col-md-3">Right</div>
+
+    <div>
+        {{isLogin}}
+        <div id="header">
+            <h1>StickMee</h1>
+            <p>The best partner for your business.</p>
+        </div>
+        <div id="login">
+            <h2>LOGIN</h2>
+            <p class="text">Login with your facebook</p>
+                <div class="facebook-login">
+                    <div class="fb-login-button" data-width="70px" data-size="large"
+                        data-scope="pages_manage_metadata,public_profile,email,pages_messaging,pages_show_list"
+                        data-onlogin="logInWithFacebook();" data-button-type="login_with" data-layout="rounded"
+                        data-auto-logout-link="false" data-use-continue-as="false">
+
+                    </div>
+
+                </div>
+                
+
+            </div>
     </div>
-  </div>
+
+
 </template>
 
 <script>
 import {
-  initFacebookSdk,
-  callAuthApi,
+    initFacebookSdk,
+    loginToFacebook
 } from "../services/facebook_login.services";
 export default {
-  name: "loginPage",
-  mounted() {
-    initFacebookSdk();
-    window.logInWithFacebook = this.logInWithFacebook;
-  },
-  methods: {
-    logInWithFacebook() {
-      window.FB.login(function (response) {
-        console.log({
-          response: response.authResponse,
-        });
-        if (response.status === "connected") {
-          console.log("Successfully connected");
-          console.log(response.authResponse.accessToken);
-          const {
-            authResponse: { userID },
-          } = response;
-          window.FB.api("/me/accounts", function (response) {
-            console.log("aaccounts: " + JSON.stringify(response));
-            callAuthApi(userID, response).then((data) => {
-              console.log("successfully save" + data);
-            });
-          });
-        } else {
-          console.log(response);
+    name: "loginPage",
+    mounted() {
+        initFacebookSdk();
+        window.logInWithFacebook = this.logInWithFacebook;
+    },
+    data() {
+        return {
+            isLogin: false,
         }
-      });
     },
-    testButtonWithLogin() {
-      console.log("clicked");
-      callAuthApi("userID", "test").then((data) => {
-        console.log("successfully save" + data);
-      });
+    methods: {
+        logInWithFacebook() {
+            loginToFacebook().then((data) => {
+                if (data === 'connected') {
+                    console.log(`connected`);
+                    // this.$router.push({ name: 'Home' })
+                    this.isLogin = true;
+                }
+                  
+                
+            }
+            )
+            
+            
+        },
+       
+       
     },
-  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#login {
+    background-color: white;
+    width: 450px;
+    height: 250px;
+    margin: 20px auto;
+    padding-top: 30px;
+    border-radius: 10px;
+    border: 0px solid black;
+    box-shadow: 1px 1px 2px 0.5px grey;
+    text-align: center;
+}
+
+.text {
+    margin-bottom: 40px;
+    margin-top: 0px;
+}
+#header {
+    margin-top: 12%;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+</style>
