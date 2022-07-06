@@ -3,6 +3,7 @@ import Login from "../views/Login.vue"
 import Home from "../views/Home.vue"
 import Layout from "../views/Layout.vue"
 
+
 const routes = [
   {
     path: "/",
@@ -34,5 +35,4 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 export default router;

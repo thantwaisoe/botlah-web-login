@@ -2,21 +2,12 @@
     <div class="page">
         <div class="flexing">
             <div>
-                <h4>Facebook Page Name</h4>
-                <p>Busines Type</p>
+                <img :src="imgUrl" alt="">
             </div>
             <div>
-                <span class="pi pi-ellipsis-v"></span>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="page">
-        <div class="flexing">
-            <div>
-                <h4>Facebook Page Name</h4>
-                <p>Busines Type</p>
+                <h4>{{pageDetail.pageName}}</h4>
+                <p>{{pageDetail.serviceType}}</p>
+                <p>ID:{{pageDetail.pageId}}</p>
             </div>
             <div>
                 <span class="pi pi-ellipsis-v"></span>
@@ -29,8 +20,31 @@
 </template>
 
 <script>
+import {getProfilePicture} from "../services/facebook_login.services"
 export default {
-name:'ShowPages'
+    name: 'ShowPages',
+    data() {
+        return {
+            imgUrl: " ",
+            pageArray: []
+        }
+    },
+    props: ['pageDetail','pageId'],
+    created() {
+    //     this.pageArray.push(this.pageDetail.pageId)
+    //     console.log(this.pageArray);
+    //     // for (let i = 0; i < this.pageDetail.pageId.length; i++){
+    //     //     getProfilePicture(this.pageDetail.pageId[i]).then(data => {
+    //     //         console.log(data);
+    //     //     })
+    //     // }
+        console.log(this.pageId);
+        getProfilePicture(this.pageId).then(data => {
+            this.imgUrl = data.data.url
+        })
+
+    }
+    
 }
 </script>
 
@@ -43,7 +57,8 @@ name:'ShowPages'
     border-radius: 3px;
 }
 .page h4{
-    color: #6196e5
+    color: #6196e5;
+    margin-bottom: 0px
 }
 .flexing{
     display: flex;

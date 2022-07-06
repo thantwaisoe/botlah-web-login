@@ -1,7 +1,6 @@
 <template>
 
     <div>
-        {{isLogin}}
         <div id="header">
             <h1>StickMee</h1>
             <p>The best partner for your business.</p>
@@ -45,10 +44,12 @@ export default {
     methods: {
         logInWithFacebook() {
             loginToFacebook().then((data) => {
-                if (data === 'connected') {
+              console.log(data);
+                if (data.status === 'connected') {
                     console.log(`connected`);
-                    // this.$router.push({ name: 'Home' })
-                    this.isLogin = true;
+                    this.$router.push({ name: 'Home' })
+                    let id = data.authResponse.userID;
+                    localStorage.setItem('userId', id)
                 }
                   
                 

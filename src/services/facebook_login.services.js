@@ -50,6 +50,7 @@ export function callAuthApi(userID, response) {
     .then((res) => res.data);
 }
 export function loginToFacebook() {
+  // change async await format
   return new Promise((resolve) => {
     window.FB.login(function (response) {
       console.log({
@@ -63,17 +64,38 @@ export function loginToFacebook() {
             userID
           },
         } = response;
+        console.log("99999");
+        console.log(response);
         window.FB.api("/me/accounts", function (response) {
           console.log("aaccounts: " + JSON.stringify(response));
           callAuthApi(userID, response).then((data) => {
             console.log("successfully save" + data);
           });
         });
-        resolve(response.status)
+        setTimeout(() => { resolve(response) }, 0);
+        // resolve(response.status)
       } else {
         console.log(response);
       }
     });
   })
   
+}
+
+export function getPageByMerchantId(userID) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Headers": "*",
+  };
+  console.log("calling merchant api");
+  return axios
+    .get(process.env.VUE_APP_BASE_URL + "/api/merchant/" + userID, {
+      headers: headers,
+    })
+    .then((res) => res.data);
+}
+export function getProfilePicture(pageId) {
+  return axios
+    .get(`https://graph.facebook.com/${pageId}/picture?redirect=0&width=100&height=100`)
+    .then((res) => res.data);
 }

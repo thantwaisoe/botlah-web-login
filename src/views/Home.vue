@@ -33,8 +33,8 @@
     <div class="content">
       <Button type="button" label="Add Your Facebook Page" icon="pi pi-plus" />
       <h3>Facebook Page List</h3>
-      <div>
-        <ShowPages />
+      <div v-for="page in fbPage" :key="page">
+        <ShowPages :pageDetail="page" :pageId="page.pageId"/>
       </div>
 
       <!-- <div class="pages-list"> -->
@@ -55,17 +55,26 @@
 </template>
 
 <script>
+import {getPageByMerchantId} from "../services/facebook_login.services"
 import ShowPages from './ShowPages.vue'
 export default {
   name: 'Home',
   components: {
     ShowPages
   },
-    data() {
-        return {
-            visible: false
-        }
+  data() {
+    return {
+      fbPage: null,
+      visible: false, 
     }
+  },
+  created() {
+    let id = localStorage.getItem('userId')
+    getPageByMerchantId(id).then((data) => {    
+      this.fbPage = data.data
+    })
+
+  }
 }
 </script>
 
