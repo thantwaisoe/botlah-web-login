@@ -30,6 +30,7 @@ import {
     initFacebookSdk,
     loginToFacebook
 } from "../services/facebook_login.services";
+import store from "@/store";
 export default {
     name: "loginPage",
     mounted() {
@@ -49,7 +50,7 @@ export default {
                     console.log(`connected`);
                     this.$router.push({ name: 'Home' })
                     let id = data.authResponse.userID;
-                    localStorage.setItem('userId', id)
+                    store.commit('updateUserId',id)
                 }
                   
                 

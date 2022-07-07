@@ -25,8 +25,6 @@ app.use(store);
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 
-localStorage.setItem("key", "value");
-
 // component
 app.component('Menubar',Menubar)
 app.component('Listbox',Listbox)

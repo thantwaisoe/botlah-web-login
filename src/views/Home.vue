@@ -57,6 +57,7 @@
 <script>
 import {getPageByMerchantId} from "../services/facebook_login.services"
 import ShowPages from './ShowPages.vue'
+import store from "@/store"
 export default {
   name: 'Home',
   components: {
@@ -69,7 +70,8 @@ export default {
     }
   },
   created() {
-    let id = localStorage.getItem('userId')
+    let id = store.state.userId
+    console.log({id})
     getPageByMerchantId(id).then((data) => {    
       this.fbPage = data.data
     })

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue"
 import Home from "../views/Home.vue"
 import Layout from "../views/Layout.vue"
+import store from "@/store";
 
 
 const routes = [
@@ -34,5 +35,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  store.commit('updateUserId',localStorage.getItem("userId"))
+  next();
 });
 export default router;
