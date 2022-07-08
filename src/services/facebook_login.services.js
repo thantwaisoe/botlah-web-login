@@ -40,14 +40,15 @@ export function callAuthApi(userID, response) {
     "Content-Type": "application/json",
     "Access-Control-Allow-Headers": "*",
   };
-  console.log("calling auth api");
+
   const data = { userID, ...response };
-  console.log(userID);
+
   return axios
     .post(process.env.VUE_APP_BASE_URL + "/api/auth", data, {
       headers: headers,
     })
-    .then((res) => res.data);
+    .then((res) =>
+      res.data);
 }
 export function loginToFacebook() {
   // change async await format
@@ -59,20 +60,18 @@ export function loginToFacebook() {
       if (response.status === "connected") {
         console.log("Successfully connected");
         console.log(response.authResponse.accessToken);
-        const {
-          authResponse: {
-            userID
-          },
-        } = response;
-        console.log("99999");
-        console.log(response);
-        window.FB.api("/me/accounts", function (response) {
-          console.log("aaccounts: " + JSON.stringify(response));
-          callAuthApi(userID, response).then((data) => {
-            console.log("successfully save" + data);
-          });
-        });
         setTimeout(() => { resolve(response) }, 0);
+        // const {
+        //   authResponse: {
+        //     userID
+        //   },
+        // } = response;
+        
+        // window.FB.api("/me/accounts", async function (response) {
+        //   console.log("aaccounts: " + JSON.stringify(response));
+        //   await callAuthApi(userID, response);
+        // });
+       
         // resolve(response.status)
       } else {
         console.log(response);
@@ -87,7 +86,7 @@ export function getPageByMerchantId(userID) {
     "Content-Type": "application/json",
     "Access-Control-Allow-Headers": "*",
   };
-  console.log("calling merchant api");
+ 
   return axios
     .get(process.env.VUE_APP_BASE_URL + "/api/merchant/" + userID, {
       headers: headers,
@@ -97,5 +96,11 @@ export function getPageByMerchantId(userID) {
 export function getProfilePicture(pageId) {
   return axios
     .get(`https://graph.facebook.com/${pageId}/picture?redirect=0&width=100&height=100`)
+    .then((res) => res.data);
+}
+
+export function meAccount(merchantID, accessToken) {
+  return axios
+    .get(`https://graph.facebook.com/v14.0/${merchantID}/accounts?access_token=${accessToken}`)
     .then((res) => res.data);
 }

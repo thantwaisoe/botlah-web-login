@@ -10,7 +10,8 @@
                 <p>ID:{{pageDetail.pageId}}</p>
             </div>
             <div>
-                <span class="pi pi-ellipsis-v"></span>
+                <!-- TODO: add more about this page when user click -->
+                <!-- <span class="pi pi-ellipsis-v"></span> -->
             </div>
         </div>
 
@@ -31,14 +32,6 @@ export default {
     },
     props: ['pageDetail','pageId'],
     created() {
-    //     this.pageArray.push(this.pageDetail.pageId)
-    //     console.log(this.pageArray);
-    //     // for (let i = 0; i < this.pageDetail.pageId.length; i++){
-    //     //     getProfilePicture(this.pageDetail.pageId[i]).then(data => {
-    //     //         console.log(data);
-    //     //     })
-    //     // }
-        console.log(this.pageId);
         getProfilePicture(this.pageId).then(data => {
             this.imgUrl = data.data.url
         })
