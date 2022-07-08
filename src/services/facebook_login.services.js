@@ -54,12 +54,7 @@ export function loginToFacebook() {
   // change async await format
   return new Promise((resolve) => {
     window.FB.login(function (response) {
-      console.log({
-        response: response.authResponse,
-      });
       if (response.status === "connected") {
-        console.log("Successfully connected");
-        console.log(response.authResponse.accessToken);
         setTimeout(() => { resolve(response) }, 0);
         // const {
         //   authResponse: {
@@ -73,8 +68,6 @@ export function loginToFacebook() {
         // });
        
         // resolve(response.status)
-      } else {
-        console.log(response);
       }
     });
   })

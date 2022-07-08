@@ -49,17 +49,14 @@ export default {
             loginToFacebook()
                 .then((data) => {
                     this.isLoading = true;
-                    console.log(data);
                     let id = data.authResponse.userID;
                     let token = data.authResponse.accessToken;
                     localStorage.setItem('userId', id)
                     if (data.status === 'connected') {
                         meAccount(id, token)
                             .then(data => {
-                                console.log("meAccount data" + data);
                                 callAuthApi(id, data)
-                                    .then(data => {
-                                        console.log(data + "from call Auth api" + data);
+                                    .then(() => {
                                         this.isLoading = false;
                                         this.$router.push({
                                             name: 'Home'

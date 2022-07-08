@@ -74,11 +74,8 @@ export default {
       let id = localStorage.getItem('userId')
       this.isLoading = true;
         getPageByMerchantId(id).then((data) => {
-          console.log(`data-----`, data);
           this.fbPage = data.data
             if (this.fbPage) {
-                console.log("New data");
-                console.log(this.fbPage);
               this.showPages = true;
               this.isLoading = false;
 
